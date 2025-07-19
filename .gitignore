@@ -1,0 +1,19 @@
+# Бинарники
+*.exe
+*.out
+*.test
+
+# Временные файлы
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Go
+vendor/
+bin/
+.env
