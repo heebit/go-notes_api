@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/heebit/notes-api/internal/db"
+	"github.com/heebit/notes-api/db"
 	"github.com/heebit/notes-api/models"
 )
 

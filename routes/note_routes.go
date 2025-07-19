@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/heebit/notes-api/internal/controllers"
+	"github.com/heebit/notes-api/controllers"
 )
 
 func NoteRoutes(r *gin.Engine) {

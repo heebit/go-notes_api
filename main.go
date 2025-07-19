@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/heebit/notes-api/internal/config"
-	"github.com/heebit/notes-api/internal/db"
-	"github.com/heebit/notes-api/internal/routes"
+	"github.com/heebit/notes-api/config"
+	"github.com/heebit/notes-api/db"
+	"github.com/heebit/notes-api/routes"
 	"github.com/heebit/notes-api/models"
 )
 
