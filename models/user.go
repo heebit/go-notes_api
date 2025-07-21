@@ -7,5 +7,5 @@ type User struct {
 	Username string `json:"username" gorm:"unique"`
 	Password string `json:"password"`
 	Email    string `json:"email" gorm:"unique"`
-	Notes    []Note	
+	Notes    []Note	`gorm:"foreignKey:UserID"`
 } 
