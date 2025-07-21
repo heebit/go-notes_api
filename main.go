@@ -7,7 +7,6 @@ import (
 	"github.com/heebit/notes-api/config"
 	"github.com/heebit/notes-api/db"
 	_ "github.com/heebit/notes-api/docs"
-	"github.com/heebit/notes-api/models"
 	"github.com/heebit/notes-api/routes"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -23,12 +22,16 @@ func main() {
 	config.LoadEnv()
 	db.Connect()
 
-	db.DB = db.DB.Debug() // Включение режима отладки для GORM, если необходимо
-	if err := db.DB.AutoMigrate(&models.User{}, &models.Note{}); err != nil {
-		log.Fatalf("Ошибка миграции: %v", err)
-	}
+	defer func() {
+		if db.SqlDB != nil {
+			if err := db.SqlDB.Close(); err != nil {
+				log.Fatalf("Ошибка закрытия базы данных: %v", err)
+			}
+		}
+	}()
 
 	r := gin.Default()
+
 	r.GET("/swagger/*any",
 		ginSwagger.WrapHandler(
 			swaggerFiles.Handler,

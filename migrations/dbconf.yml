@@ -1,0 +1,4 @@
+env: development
+development:
+  dialect: postgres
+  datasource: host=localhost user=${DB_USER} password=${DB_PASSWORD} dbname=${DB_NAME} port=${DB_PORT} sslmode=disable
