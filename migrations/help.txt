@@ -1,0 +1,10 @@
+// Создание файла для миграций
+goose -dir (нвазние папки) create (название миграции) sql
+
+// накатывание миграции
+goose -dir migrations postgres "host=localhost user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME port=$DB_PORT sslmode=disable" up
+
+
+
+
+
