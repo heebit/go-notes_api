@@ -3,10 +3,11 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/heebit/notes-api/internal/controllers"
+	"github.com/heebit/notes-api/middleware"
 )
 
 func NoteRoutes(r *gin.Engine) {
-	note := r.Group("/notes")
+	note := r.Group("/notes").Use(middleware.AuthMiddleware())
 	{
 		note.GET("/", controllers.GetNotes)
 		note.POST("/", controllers.CreateNote)
