@@ -10,6 +10,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Register godoc
+// @Summary Регистрация пользователя
+// @Description Создание нового пользователя
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param input body models.User true "Данные пользователя"
+// @Success 201 {object} models.MessageResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Router /register [post]
 func Register(c *gin.Context) {
 	var input models.User
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -27,6 +37,17 @@ func Register(c *gin.Context) {
 	}
 }
 
+// Login godoc
+// @Summary Аутентификация пользователя
+// @Description Вход в систему по логину и паролю
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param input body models.User true "Credentials"
+// @Success 200 {object} models.MessageResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Router /login [post]
 func Login(c *gin.Context) {
 	var input models.User
 	if err := c.ShouldBindJSON(&input); err != nil {

@@ -1,0 +1,186 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.Note:
+    type: object
+  models.NoteSwagger:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.User:
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для управления заметками
+  title: Notes API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Вход в систему по логину и паролю
+      parameters:
+      - description: Credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Аутентификация пользователя
+      tags:
+      - auth
+  /notes:
+    get:
+      description: Возвращает список всех заметок
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.NoteSwagger'
+            type: array
+      summary: Получить все заметки
+      tags:
+      - notes
+    post:
+      consumes:
+      - application/json
+      description: Создает новую заметку по переданным данным
+      parameters:
+      - description: Данные заметки
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.NoteSwagger'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Создать новую заметку
+      tags:
+      - notes
+  /notes/{id}:
+    delete:
+      description: Удаляет заметку по ID
+      parameters:
+      - description: ID заметки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+      summary: Удалить заметку
+      tags:
+      - notes
+    put:
+      consumes:
+      - application/json
+      description: Обновляет заметку по ID
+      parameters:
+      - description: ID заметки
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Обновленные данные
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.Note'
+      - description: Обновленные данные
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.NoteSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.NoteSwagger'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Обновить заметку
+      tags:
+      - notes
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Создание нового пользователя
+      parameters:
+      - description: Данные пользователя
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Регистрация пользователя
+      tags:
+      - auth
+swagger: "2.0"

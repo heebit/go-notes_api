@@ -8,3 +8,10 @@ type Note struct {
 	Content string `json:"content"`
 	UserID uint   `json:"user_id"`
 }
+
+type NoteSwagger struct {
+	ID      uint   `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	UserID  uint   `json:"user_id"`
+}
