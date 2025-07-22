@@ -2,11 +2,13 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/heebit/notes-api/config"
 	"github.com/heebit/notes-api/db"
 	_ "github.com/heebit/notes-api/docs"
+	"github.com/heebit/notes-api/internal/seed"
 	"github.com/heebit/notes-api/routes"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -29,6 +31,11 @@ func main() {
 			}
 		}
 	}()
+
+	if os.Getenv("APP_ENV")== "development" {
+		seed.Load_users()
+		seed.Load_notes()
+	}
 
 	r := gin.Default()
 

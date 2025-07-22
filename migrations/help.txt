@@ -4,6 +4,8 @@ goose -dir (нвазние папки) create (название миграции
 // накатывание миграции
 goose -dir migrations postgres "host=localhost user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME port=$DB_PORT sslmode=disable" up
 
+// сброс миграций 
+goose -dir migrations postgres "host=localhost user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME port=$DB_PORT sslmode=disable" down
 
 
 
