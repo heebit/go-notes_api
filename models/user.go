@@ -4,9 +4,9 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string `json:"username" gorm:"unique"`
-	Password string `json:"password"`
-	Email    string `json:"email" gorm:"unique"`
+	Username string `json:"username" gorm:"unique" binding:"required,min=3,max=30"`
+	Password string `json:"password" binding:"required,min=6"`
+	Email    string `json:"email" gorm:"unique" binding:"required,email" `
 	Notes    []Note	`gorm:"foreignKey:UserID"`
 } 
 
@@ -16,12 +16,4 @@ type UserSwagger struct {
     Password  string `json:"password"`
     CreatedAt string `json:"created_at"`
     UpdatedAt string `json:"updated_at"`
-}
-type MessageResponse struct {
-    Message string `json:"message"`
-}
-
-// ErrorResponse стандартная ошибка
-type ErrorResponse struct {
-    Error string `json:"error"`
 }

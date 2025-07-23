@@ -25,6 +25,19 @@ definitions:
     type: object
   models.User:
     type: object
+  models.UserSwagger:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -183,4 +196,68 @@ paths:
       summary: Регистрация пользователя
       tags:
       - auth
+  /users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserSwagger'
+            type: array
+      summary: Получить всех пользователей
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Удалить пользователя
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Обновляет информацию о пользователе по ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные пользователя
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserSwagger'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Обновить пользователя
+      tags:
+      - users
 swagger: "2.0"
