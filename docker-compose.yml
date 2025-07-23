@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:16
+    restart: always
     container_name: notes_postgres
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -13,5 +12,23 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:      # <-- перемещено на правильный уровень
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: db
+      DB_PORT: 5432 
+      JWT_SECRET: ${JWT_SECRET}
+      APP_ENV: ${APP_ENV}
+
+
 volumes:
-    pgdata:
+  pgdata:

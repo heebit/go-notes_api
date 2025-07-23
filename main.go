@@ -5,13 +5,13 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/heebit/notes-api/config"
 	"github.com/heebit/notes-api/db"
 	_ "github.com/heebit/notes-api/docs"
 	"github.com/heebit/notes-api/internal/seed"
 	"github.com/heebit/notes-api/routes"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 )
 
 // @title Notes API
@@ -21,7 +21,6 @@ import (
 // @BasePath /
 
 func main() {
-	config.LoadEnv()
 	db.Connect()
 
 	defer func() {
