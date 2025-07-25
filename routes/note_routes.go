@@ -10,6 +10,7 @@ func NoteRoutes(r *gin.Engine) {
 	note := r.Group("/notes").Use(middleware.AuthMiddleware())
 	{
 		note.GET("/", controllers.GetNotes)
+		note.GET("/:id", controllers.GetNote)
 		note.POST("/", controllers.CreateNote)
 		note.DELETE("/:id", controllers.DeleteNote)
 		note.PUT("/:id", controllers.UpdateNote)

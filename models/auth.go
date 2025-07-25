@@ -6,10 +6,3 @@ type LoginInput struct {
     Password   string `json:"password" binding:"required,min=6"` 
 }
 
-type MessageResponse struct {
-    Message string `json:"message"`
-}
-
-type ErrorResponse struct {
-    Error string `json:"error"`
-}
