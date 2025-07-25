@@ -10,7 +10,9 @@ func UserRoutes(r *gin.Engine) {
 	{
 		user.GET("/", controllers.GetUsers)
 		user.GET("/:id", controllers.GetUser)
-		user.DELETE("/:id", controllers.DeleteUser)
 		user.PUT("/:id", controllers.UpdateUser)
+		user.PUT("/me/password", controllers.ChangePassword)
+		user.DELETE("/:id", controllers.DeleteUser)
+
 	}
 }

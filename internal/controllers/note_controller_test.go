@@ -5,48 +5,15 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"strconv" // Для strconv.FormatUint
+	"strconv"
 	"testing"
-	"time" // Для jwt.MapClaims в registerAndLoginUser
-
 	"github.com/gin-gonic/gin"
 	"github.com/heebit/notes-api/internal/controllers"
-	"github.com/heebit/notes-api/middleware" // Путь к вашему middleware
+	"github.com/heebit/notes-api/middleware"
 	"github.com/heebit/notes-api/models"
-
-	"github.com/golang-jwt/jwt/v5" // Добавлен для ручной генерации JWT в registerAndLoginUser, если utils.GenerateJWT недоступен
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
-
-// registerAndLoginUser - вспомогательная функция для создания тестового пользователя
-// и получения его JWT-токена.
-func registerAndLoginUser(t *testing.T, testDB *gorm.DB, username, email, password string) (string, uint) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	assert.NoError(t, err) // Проверяем, что хеширование прошло без ошибок
-
-	user := models.User{
-		Username: username,
-		Email:    email,
-		Password: string(hashedPassword),
-	}
-	result := testDB.Create(&user)  // Создаем пользователя напрямую в БД
-	assert.NoError(t, result.Error) // Проверяем, что пользователь успешно создан
-
-	// Генерируем JWT-токен для только что созданного пользователя.
-	// Используйте utils.GenerateJWT, если он корректно работает и доступен.
-	// Если нет, можно использовать прямую генерацию токена для тестов:
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": float64(user.ID),                      // JWT claims обычно используют float64 для чисел
-		"exp":     time.Now().Add(time.Hour * 24).Unix(), // Токен действует 24 часа
-	})
-	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-	assert.NoError(t, err)
-
-	return tokenString, user.ID
-}
 
 // --- Основные тестовые сценарии для NoteController ---
 
