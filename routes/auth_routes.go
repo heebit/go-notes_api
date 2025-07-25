@@ -6,6 +6,9 @@ import (
 )
 
 func AuthRoutes(r *gin.Engine) {
-	r.POST("/register", controllers.Register)
-	r.POST("/login", controllers.Login)
+	authGroup := r.Group("/auth")
+	{
+		authGroup.POST("/register", controllers.Register)
+		authGroup.POST("/login", controllers.Login)
+	}
 }
