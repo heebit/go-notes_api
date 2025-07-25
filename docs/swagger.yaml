@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  models.ChangePasswordInput:
+    properties:
+      new_password:
+        minLength: 6
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
   models.ErrorResponse:
     properties:
       error:
@@ -11,6 +22,25 @@ definitions:
         type: string
     type: object
   models.Note:
+    properties:
+      content:
+        type: string
+      created_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        type: string
+      updated_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      user_id:
+        type: integer
+    required:
+    - content
+    - title
     type: object
   models.NoteSwagger:
     properties:
@@ -23,11 +53,49 @@ definitions:
       user_id:
         type: integer
     type: object
+  models.UpdateUserInput:
+    properties:
+      email:
+        type: string
+      username:
+        maxLength: 30
+        minLength: 3
+        type: string
+    type: object
   models.User:
+    properties:
+      created_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      email:
+        type: string
+      id:
+        example: 1
+        type: integer
+      notes:
+        items:
+          $ref: '#/definitions/models.Note'
+        type: array
+      password:
+        minLength: 6
+        type: string
+      updated_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      username:
+        maxLength: 30
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
     type: object
   models.UserSwagger:
     properties:
       created_at:
+        type: string
+      email:
         type: string
       id:
         type: integer
@@ -212,6 +280,7 @@ paths:
       - users
   /users/{id}:
     delete:
+      description: Удаляет пользователя по ID. Доступно только для владельца токена.
       parameters:
       - description: User ID
         in: path
@@ -223,29 +292,55 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.MessageResponse'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: Удалить пользователя
       tags:
       - users
-    put:
-      consumes:
-      - application/json
-      description: Обновляет информацию о пользователе по ID
+    get:
+      description: Возвращает информацию о пользователе по ID. Доступно только для
+        владельца токена.
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Данные пользователя
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserSwagger'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Получить пользователя по ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Обновляет информацию о пользователе по ID. Доступно только для
+        владельца токена.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные пользователя для обновления
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.UserSwagger'
+          $ref: '#/definitions/models.UpdateUserInput'
       produces:
       - application/json
       responses:
@@ -257,7 +352,41 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       summary: Обновить пользователя
+      tags:
+      - users
+  /users/me/password:
+    put:
+      consumes:
+      - application/json
+      description: Смена пароля для текущего авторизованного пользователя
+      parameters:
+      - description: Старый и новый пароли
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Сменить пароль
       tags:
       - users
 swagger: "2.0"
